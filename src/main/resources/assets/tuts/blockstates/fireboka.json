@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "tuts:block/fireboka" },
+    "facing=east": { "model": "tuts:block/fireboka", "y": 90 },
+    "facing=south": { "model": "tuts:block/fireboka", "y": 180 },
+    "facing=west": { "model": "tuts:block/fireboka", "y": 270 }
+  }
+}
