@@ -23,6 +23,7 @@ public class SaveDataTuts extends SavedData {
     public static SaveDataTuts load(CompoundTag tag) {
         SaveDataTuts data = new SaveDataTuts();
         data.temperatures = tag.getIntArray("temperatures");
+        data.savedDay = tag.getLong("saveday");
         if (data.temperatures.length != 3) {
             data.temperatures = new int[]{0, 0, 0};  // защита от ошибок
         }
@@ -32,6 +33,7 @@ public class SaveDataTuts extends SavedData {
     @Override
     public CompoundTag save(CompoundTag tag) {
         tag.putIntArray("temperatures", temperatures);
+        tag.putLong("saveday", savedDay);
         return tag;
     }
 

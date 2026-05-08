@@ -35,12 +35,6 @@ public class RandomCount {
                 "temperature_data"
         );
 
-        if (saveData == null) {
-            cachedNumber = randomInRange(1, 1000);
-            isLoaded = true;
-            return cachedNumber;
-        }
-
         long savedValue = saveData.getSavedDay();
 
         // Если значение -1 или 0 (нет сохранённого) - создаём новое
@@ -48,6 +42,7 @@ public class RandomCount {
             cachedNumber = randomInRange(1, 1000);
             saveData.setSavedDay(cachedNumber);
             saveData.setDirty();
+            serverLevel.getDataStorage().save();
             isLoaded = true;
             return cachedNumber;
         }
