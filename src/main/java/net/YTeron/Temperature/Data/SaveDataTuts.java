@@ -53,5 +53,4 @@ public class SaveDataTuts extends SavedData {
         this.savedDay = savedDay;
         setDirty();
     }
-
 }
