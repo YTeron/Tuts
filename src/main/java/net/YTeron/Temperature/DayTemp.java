@@ -29,7 +29,6 @@ public class DayTemp {
 
         return savedForecast;
     }
-
     private static Integer[] generateNewForecast() {
         Integer[] forecast = new Integer[3];
         for (int i = 0; i < 3; i++) {

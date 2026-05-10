@@ -1,61 +1,44 @@
 package net.YTeron.Temperature;
 
-import net.YTeron.Temperature.Data.SaveDataTuts;
-import net.minecraft.server.level.ServerLevel;
+import net.YTeron.Temperature.Modif.AData;
 import net.minecraft.world.level.Level;
 import java.util.Random;
 
-public class RandomCount {
+public class RandomCount extends AData {
+    private static long lastTime = -1;
+    private static boolean ye =false;
 
     private static final Random RANDOM = new Random();
 
-    // Кэш для хранения загруженного значения
-    private static int cachedNumber = -1;
-    private static boolean isLoaded = false;
+    static {
+        // Настройка для RandomCount
+        setDataKey("random_count_data");  // свой файл сохранения
+        setDefaultValue(0);                // значение по умолчанию
+    }
 
     public static int randomInRange(int min, int max) {
         return min + RANDOM.nextInt(max - min + 1);
     }
 
     public static int getOrCreateRandomNumber(Level level) {
-        // Если значение уже загружено в кэш - возвращаем его
-        if (isLoaded) {
-            return cachedNumber;
+        int value = getOrCreateNumber(level);
+        long currentDay = level.getDayTime();
+        if (lastTime > currentDay) {
+            lastTime = currentDay;
+            ye=true;
         }
-
-        // Работаем только на стороне сервера
-        if (level == null || level.isClientSide || !(level instanceof ServerLevel serverLevel)) {
-            return -1;
+        if (ye) {
+            int newValue = randomInRange(1, 1000);
+            setValue(level, newValue);
+            ye =false;
+            return newValue;
         }
-
-        // Получаем доступ к хранилищу данных
-        SaveDataTuts saveData = serverLevel.getDataStorage().computeIfAbsent(
-                SaveDataTuts::load,
-                SaveDataTuts::create,
-                "temperature_data"
-        );
-
-        long savedValue = saveData.getSavedDay();
-
-        // Если значение -1 или 0 (нет сохранённого) - создаём новое
-        if (savedValue <= 0) {
-            cachedNumber = randomInRange(1, 1000);
-            saveData.setSavedDay(cachedNumber);
-            saveData.setDirty();
-            serverLevel.getDataStorage().save();
-            isLoaded = true;
-            return cachedNumber;
+        if (value == 0) {
+            int newValue = randomInRange(1, 1000);
+            setValue(level, newValue);
+            return newValue;
         }
-
-        // Загружаем сохранённое значение в кэш
-        cachedNumber = (int) savedValue;
-        isLoaded = true;
-        return cachedNumber;
-    }
-
-    // Опционально: метод для сброса кэша (при перезагрузке мира)
-    public static void resetCache() {
-        isLoaded = false;
-        cachedNumber = -1;
+        lastTime = currentDay;
+        return value;
     }
 }

@@ -9,7 +9,7 @@ public class SaveDataTuts extends SavedData {
 
     // Данные, которые мы сохраняем
     private int[] temperatures = new int[]{0, 0, 0};
-    private long savedDay = -1;  // ← поле для хранения дня
+    private int savedDay = -1;  // ← поле для хранения дня
     public SaveDataTuts() {
 
     }
@@ -23,7 +23,7 @@ public class SaveDataTuts extends SavedData {
     public static SaveDataTuts load(CompoundTag tag) {
         SaveDataTuts data = new SaveDataTuts();
         data.temperatures = tag.getIntArray("temperatures");
-        data.savedDay = tag.getLong("saveday");
+        data.savedDay = tag.getInt("saveday");
         if (data.temperatures.length != 3) {
             data.temperatures = new int[]{0, 0, 0};  // защита от ошибок
         }
@@ -33,7 +33,7 @@ public class SaveDataTuts extends SavedData {
     @Override
     public CompoundTag save(CompoundTag tag) {
         tag.putIntArray("temperatures", temperatures);
-        tag.putLong("saveday", savedDay);
+        tag.putInt("saveday",savedDay);
         return tag;
     }
 
@@ -45,11 +45,11 @@ public class SaveDataTuts extends SavedData {
         this.temperatures = temperatures;
         setDirty();
     }
-    public long getSavedDay() {
+    public int getSavedDay() {
         return savedDay;
     }
 
-    public void setSavedDay(long savedDay) {
+    public void setSavedDay(int savedDay) {
         this.savedDay = savedDay;
         setDirty();
     }
