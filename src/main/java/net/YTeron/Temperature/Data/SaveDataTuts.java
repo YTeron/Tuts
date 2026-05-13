@@ -5,7 +5,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 
 public class SaveDataTuts extends SavedData {
 
-    private static final String DATA_KEY = "temperature_data";
+    //private static final String DATA_KEY = "temperature_data";
 
     // Данные, которые мы сохраняем
     private int[] temperatures = new int[]{0, 0, 0};

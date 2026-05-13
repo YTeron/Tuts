@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import static net.YTeron.Temperature.BiomsModif.BiomeType;
 import static net.YTeron.Temperature.InbaseChecker.*;
-import static net.YTeron.Temperature.RandomCount.getOrCreateRandomNumber;
 
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
@@ -29,6 +28,9 @@ public class TemperatureEnd {
         ticks++;
         if (ticks >= 15) {
             ticks = 0;
+            boolean hasblock = false;
+            if (getDistanceToBlockUp(player) !=-1)
+                hasblock = true;
             BiomsModif.BiomsM biomeType = BiomeType(player);
             ItemModif.ItemM itemType = ItemModif.getItemBasedOnHand(player);
             Level level = event.player.level();
@@ -40,9 +42,8 @@ public class TemperatureEnd {
             int day1 = DayTemp.Raspisan(level)[0];
             int day2 = DayTemp.Raspisan(level)[1];
             int day3 = DayTemp.Raspisan(level)[2];
-            boolean hasblock = false;
-            if (getDistanceToBlockUp(player) !=-1)
-                hasblock = true;
+            int number = RandomCount.getInstance().getOrCreateRandomNumber(level, hasblock);
+
             boolean nav = IPB(player);
             int Ftemp = baseTempI +baseTempB+armorTemp+tempblock+daytemp;
             if (nav && BlockRF(5,player)!=0) {
@@ -61,7 +62,7 @@ public class TemperatureEnd {
             switch (biomeType) {
                 case SNOWY, ICEP, FROZEN, DEEPF ->
                     player.displayClientMessage(
-                            Component.literal("Температура: " + day3+ " "+day2+" " +day1+" " + getOrCreateRandomNumber(level)),
+                            Component.literal("Температура: " + day3+ " "+day2+" " +day1+" " + number),
                             true
                     );
                 default -> {}

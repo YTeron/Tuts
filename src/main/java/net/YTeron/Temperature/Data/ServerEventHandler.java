@@ -1,6 +1,6 @@
-package net.YTeron.Temperature;
+package net.YTeron.Temperature.Data;
 
-import net.YTeron.Temperature.Modif.AData;
+import net.YTeron.Temperature.RandomCount;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,11 +11,11 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
-        AData.resetCache();
+        RandomCount.getInstance().resetCache();
     }
 
     @SubscribeEvent
     public static void onServerStopped(ServerStoppedEvent event) {
-        AData.resetCache();
+        RandomCount.getInstance().resetCache();
     }
 }
