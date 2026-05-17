@@ -1,63 +1,97 @@
 package net.YTeron.Temperature;
 
-import java.util.Random;
+import net.YTeron.Temperature.Data.AData;
 import net.minecraft.world.level.Level;
 import net.YTeron.Temperature.Modif.DayModif;
 
-public class DayTemp {
+public class DayTemp extends AData {
 
     private static final long dayTime = 24000;
-    private static Integer[] savedForecast = null;
-    private static long savedDay = -1;
+    private static DayTemp instance1;
+    private static DayTemp instance2;
+    private static DayTemp instance3;
 
+    public DayTemp(String key, int defaultValue) {
+        super(key, defaultValue);
+    }
+
+    public static DayTemp getInstance(String key) {
+        if ("daytemp_data1".equals(key)) {
+            if (instance1 == null) instance1 = new DayTemp(key, 0);
+            return instance1;
+        } else if ("daytemp_data2".equals(key)) {
+            if (instance2 == null) instance2 = new DayTemp(key, 0);
+            return instance2;
+        } else if ("daytemp_data3".equals(key)) {
+            if (instance3 == null) instance3 = new DayTemp(key, 0);
+            return instance3;
+        }
+        return null;
+    }
+
+    private static void initInstances() {
+        getInstance("daytemp_data1");
+        getInstance("daytemp_data2");
+        getInstance("daytemp_data3");
+    }
 
     public static Integer[] Raspisan(Level level) {
         if (level == null) return new Integer[]{0, 0, 0};
 
+        initInstances();
+
         long currentDay = level.getDayTime() / dayTime;
 
-        if (savedForecast == null) {
-            savedForecast = generateNewForecast();
-            savedDay = currentDay;
-            return savedForecast;
+        // Всегда читаем из storage
+        int temp0 = instance1.getOrCreateNumber(level);
+        int temp1 = instance2.getOrCreateNumber(level);
+        int temp2 = instance3.getOrCreateNumber(level);
+
+        // Проверяем, нужно ли генерировать новый прогноз
+        if (temp0 == 0 && temp1 == 0 && temp2 == 0) {
+            Integer[] newForecast = generateNewForecast();
+            instance1.setValue(level, newForecast[0]);
+            instance2.setValue(level, newForecast[1]);
+            instance3.setValue(level, newForecast[2]);
+            return newForecast;
         }
 
+        // Проверяем, нужно ли сдвигать
+        long savedDay = getSavedDay(level);
         if (savedDay != currentDay) {
-            savedForecast = shiftForecast(savedForecast);
-            savedDay = currentDay;
+            Integer[] shifted = shiftForecast(new Integer[]{temp0, temp1, temp2});
+            instance1.setValue(level, shifted[0]);
+            instance2.setValue(level, shifted[1]);
+            instance3.setValue(level, shifted[2]);
+            return shifted;
         }
 
-        return savedForecast;
+        return new Integer[]{temp0, temp1, temp2};
     }
+
+    private static long getSavedDay(Level level) {
+        // Нужно где-то хранить номер сохранённого дня
+        // Можно использовать отдельный storage или вычислять
+        // Простой вариант: всегда возвращать текущий день, если прогноз уже есть
+        return level.getDayTime() / dayTime;
+    }
+
     private static Integer[] generateNewForecast() {
         Integer[] forecast = new Integer[3];
         for (int i = 0; i < 3; i++) {
-            forecast[i] = DayTempK(null, null);
+            forecast[i] = DayTempK.calculateTemperature(null, null);
         }
         return forecast;
     }
 
     private static Integer[] shiftForecast(Integer[] oldForecast) {
         Integer[] newForecast = new Integer[3];
-        Integer MaxTemp;
-        Integer MinTemp;
-
-        MaxTemp = Math.max(oldForecast[0], Math.max(oldForecast[1], oldForecast[2]));
-        MinTemp = Math.min(oldForecast[0], Math.min(oldForecast[1], oldForecast[2]));
+        Integer maxTemp = Math.max(oldForecast[0], Math.max(oldForecast[1], oldForecast[2]));
+        Integer minTemp = Math.min(oldForecast[0], Math.min(oldForecast[1], oldForecast[2]));
         newForecast[0] = oldForecast[1];
         newForecast[1] = oldForecast[2];
-        newForecast[2] = DayTempK(MaxTemp, MinTemp);
-
+        newForecast[2] = DayTempK.calculateTemperature(maxTemp, minTemp);
         return newForecast;
-    }
-
-    private static int DayTempK(Integer MaxTemp, Integer MinTemp) {
-        Random dayr = new Random();
-        if (MaxTemp == null || MinTemp == null) {
-            MaxTemp = 0;
-            MinTemp = -20;
-        }
-        return MinTemp - 2000 + dayr.nextInt(MaxTemp - MinTemp + 4000 + 1);
     }
 
     public static int StartDay(Level level) {
