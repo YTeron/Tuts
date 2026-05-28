@@ -19,7 +19,6 @@ public enum ModArmorMaterials implements ArmorMaterial {
             () -> Ingredient.of(Tags.Items.INGOTS_IRON)); // <-- ИНГРЕДИЕНТ ДЛЯ ПОЧИНКИ
 
     private static final int[] BASE_DURABILITY = new int[] {13, 15, 16, 11};
-    // Служебные поля. Их трогать не нужно.
     private final String name;
     private final int durabilityMultiplier;
     private final int[] slotProtections;

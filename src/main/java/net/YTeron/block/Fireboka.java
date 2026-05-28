@@ -25,14 +25,12 @@ public class Fireboka extends HorizontalDirectionalBlock {
 
     public Fireboka() {
         super(Properties.of()
-                .copy(Blocks.CAMPFIRE)  // Копируем ВСЕ теги добычи с дубовых досок
-                .mapColor(MapColor.COLOR_RED)   // Красный на карте
-                .strength(3.0f, 10.0f)          // Своя прочность и взрывостойкость
+                .copy(Blocks.CAMPFIRE)
+                .mapColor(MapColor.COLOR_RED)
+                .strength(3.0f, 10.0f)
                 .sound(SoundType.METAL)
                 .lightLevel(state -> 15)
-                .noOcclusion()  // Прозрачный рендеринг
-//                .isViewBlocking((state, level, pos) -> false)  // Сквозь блок видно
-//                .isSuffocating((state, level, pos) -> false)   // Не перекрывает дыхание
+                .noOcclusion()
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
@@ -82,7 +80,6 @@ public class Fireboka extends HorizontalDirectionalBlock {
             double y = pos.getY() + 1.5;
             double z = pos.getZ() + 0.5;
 
-            // Добавляем небольшой случайный разброс
             x += (random.nextDouble() - 0.5) * 0.6;
             y += (random.nextDouble() - 0.5) * 0.2;
             z += (random.nextDouble() - 0.5) * 0.6;

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "tuts:block/obogrev" },
+    "facing=east": { "model": "tuts:block/obogrev", "y": 90 },
+    "facing=south": { "model": "tuts:block/obogrev", "y": 180 },
+    "facing=west": { "model": "tuts:block/obogrev", "y": 270 }
+  }
+}

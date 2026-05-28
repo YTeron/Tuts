@@ -23,6 +23,8 @@ public class ModItems {
     public static final RegistryObject<Item> SAPPHIRE_BLOCK;
     public static final RegistryObject<Item> RAW_SAPPHIRE_BLOCK;
     public static final RegistryObject<Item> FIREBOKA_BLOCK;
+    public static final RegistryObject<Item> OBOGREV2;
+    public static final RegistryObject<Item> GENERATOR;
 
     static {
         REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, Tuts.MOD_ID);
@@ -39,5 +41,9 @@ public class ModItems {
                 () -> new BlockItem(ModBlocks.RAW_SAPPHIRE_BLOCK.get(), new Item.Properties()));
         FIREBOKA_BLOCK = REGISTRY.register("fireboka",
                 () -> new BlockItem(ModBlocks.FIREBOKA_BLOCK.get(), new Item.Properties()));
+        OBOGREV2 = REGISTRY.register("obogrev",
+                () -> new BlockItem(ModBlocks.OBOGREV2.get(), new Item.Properties()));
+        GENERATOR = REGISTRY.register("generator",
+                () -> new BlockItem(ModBlocks.GENERATOR.get(), new Item.Properties()));
     }
 }

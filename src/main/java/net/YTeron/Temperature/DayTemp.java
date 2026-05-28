@@ -70,9 +70,6 @@ public class DayTemp extends AData {
     }
 
     private static long getSavedDay(Level level) {
-        // Нужно где-то хранить номер сохранённого дня
-        // Можно использовать отдельный storage или вычислять
-        // Простой вариант: всегда возвращать текущий день, если прогноз уже есть
         return level.getDayTime() / dayTime;
     }
 

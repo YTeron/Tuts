@@ -27,14 +27,21 @@ public class ModCreativeModTabs {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.SAPPHIRE.get());
                         pOutput.accept(ModItems.FORNAR.get());
+
                         pOutput.accept(ModBlocks.SAPPHIRE_BLOCK.get());
                         pOutput.accept(ModBlocks.RAW_SAPPHIRE_BLOCK.get());
                         pOutput.accept(ModBlocks.FIREBOKA_BLOCK.get());
+                        pOutput.accept(ModBlocks.OBOGREV2.get());
+                        pOutput.accept(ModBlocks.GENERATOR.get());
+
                         pOutput.accept(ModArmorItems.CUSTOM_HELMET.get());
                         pOutput.accept(ModArmorItems.CUSTOM_CHESTPLATE.get());
                         pOutput.accept(ModArmorItems.CUSTOM_LEGGINGS.get());
                         pOutput.accept(ModArmorItems.CUSTOM_BOOTS.get());
-
+                        pOutput.accept(ModArmorItems.CLRON_HELMET.get());
+                        pOutput.accept(ModArmorItems.CLRON_CHESTPLATE.get());
+                        pOutput.accept(ModArmorItems.CLRON_LEGGINGS.get());
+                        pOutput.accept(ModArmorItems.CLRON_BOOTS.get());
 
                         pOutput.accept(Items.DIAMOND);
                     })
