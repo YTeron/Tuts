@@ -62,7 +62,7 @@ public class TemperatureEnd {
             switch (biomeType) {
                 case SNOWY, ICEP, FROZEN, DEEPF ->
                     player.displayClientMessage(
-                            Component.literal("Температура: " + day3+ " "+day2+" " +day1+" " + number),
+                            Component.literal("Температура: " + day3+ " "+day2+" " +day1+" " + number +" " + Ftemp),
                             true
                     );
                 default -> {}
