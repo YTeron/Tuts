@@ -38,7 +38,7 @@ public class BloockModif {
                 player -> 1f
         ),
         AIR(
-                player -> -15,
+                player -> -5,
                 player -> 1f
         );
 

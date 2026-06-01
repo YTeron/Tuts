@@ -4,12 +4,25 @@ import java.util.Random;
 
 public class DayTempK {
     private static final Random RANDOM = new Random();
+    private static final int count = 500;
+    public static int calculateTemperature(Integer Temp) {
 
-    public static int calculateTemperature(Integer MaxTemp, Integer MinTemp) {
-        if (MaxTemp == null || MinTemp == null) {
-            MaxTemp = 0;
-            MinTemp = -20;
-        }
-        return MinTemp - 2000 + RANDOM.nextInt(MaxTemp - MinTemp + 4000 + 1);
+        boolean result = RANDOM.nextInt(2) == 0;
+        if (result)
+            Temp+=hightt();
+        else
+            Temp+=loww();
+        return Temp;
+
+    }
+    private static int loww()
+    {
+        boolean resultt = RANDOM.nextInt(4) == 0;
+        return resultt ? -count*2 : -count;
+    }
+    private static int hightt()
+    {
+        boolean resultt = RANDOM.nextInt(4) == 0;
+        return resultt ? count*2 : count;
     }
 }

@@ -32,7 +32,7 @@ public class Generator extends Block {
     private static final VoxelShape SHAPE = Block.box(3.0, 0.0, 3.0, 14.0, 9.0, 14.0);
 
     private static final int RADIUS = 10;
-    private static final int CHECK_INTERVAL = 20; // Проверка каждую секунду
+    private static final int CHECK_INTERVAL = 30;
 
     public Generator() {
         super(Properties.of()
@@ -88,7 +88,6 @@ public class Generator extends Block {
         }
     }
 
-    // Тиковый метод - вызывается КАЖДУЮ СЕКУНДУ пока генератор включён
     @Override
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         if (pState.getValue(CLICKED)) {

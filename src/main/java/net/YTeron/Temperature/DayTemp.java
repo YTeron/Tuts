@@ -10,6 +10,8 @@ public class DayTemp extends AData {
     private static DayTemp instance1;
     private static DayTemp instance2;
     private static DayTemp instance3;
+    private static DayTemp day;
+
 
     public DayTemp(String key, int defaultValue) {
         super(key, defaultValue);
@@ -25,7 +27,11 @@ public class DayTemp extends AData {
         } else if ("daytemp_data3".equals(key)) {
             if (instance3 == null) instance3 = new DayTemp(key, 0);
             return instance3;
+        }else if ("saveday".equals(key)) {
+            if (day == null) day = new DayTemp(key, 0);
+            return day;
         }
+
         return null;
     }
 
@@ -33,6 +39,8 @@ public class DayTemp extends AData {
         getInstance("daytemp_data1");
         getInstance("daytemp_data2");
         getInstance("daytemp_data3");
+        getInstance("saveday");
+
     }
 
     public static Integer[] Raspisan(Level level) {
@@ -47,22 +55,22 @@ public class DayTemp extends AData {
         int temp1 = instance2.getOrCreateNumber(level);
         int temp2 = instance3.getOrCreateNumber(level);
 
-        // Проверяем, нужно ли генерировать новый прогноз
         if (temp0 == 0 && temp1 == 0 && temp2 == 0) {
             Integer[] newForecast = generateNewForecast();
             instance1.setValue(level, newForecast[0]);
             instance2.setValue(level, newForecast[1]);
             instance3.setValue(level, newForecast[2]);
+            day.setValue(level, (int)currentDay);
             return newForecast;
         }
 
-        // Проверяем, нужно ли сдвигать
         long savedDay = getSavedDay(level);
         if (savedDay != currentDay) {
             Integer[] shifted = shiftForecast(new Integer[]{temp0, temp1, temp2});
             instance1.setValue(level, shifted[0]);
             instance2.setValue(level, shifted[1]);
             instance3.setValue(level, shifted[2]);
+            day.setValue(level, (int)currentDay);
             return shifted;
         }
 
@@ -70,24 +78,22 @@ public class DayTemp extends AData {
     }
 
     private static long getSavedDay(Level level) {
-        return level.getDayTime() / dayTime;
+        return day.getOrCreateNumber(level);
     }
 
     private static Integer[] generateNewForecast() {
         Integer[] forecast = new Integer[3];
         for (int i = 0; i < 3; i++) {
-            forecast[i] = DayTempK.calculateTemperature(null, null);
+            forecast[i] = DayTempK.calculateTemperature(0);
         }
         return forecast;
     }
 
     private static Integer[] shiftForecast(Integer[] oldForecast) {
         Integer[] newForecast = new Integer[3];
-        Integer maxTemp = Math.max(oldForecast[0], Math.max(oldForecast[1], oldForecast[2]));
-        Integer minTemp = Math.min(oldForecast[0], Math.min(oldForecast[1], oldForecast[2]));
         newForecast[0] = oldForecast[1];
         newForecast[1] = oldForecast[2];
-        newForecast[2] = DayTempK.calculateTemperature(maxTemp, minTemp);
+        newForecast[2] = DayTempK.calculateTemperature(oldForecast[2]);
         return newForecast;
     }
 

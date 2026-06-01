@@ -71,7 +71,6 @@ public class Obogrev2 extends HorizontalDirectionalBlock{
             double y = pPos.getY() + 0.8D;
             double z = pPos.getZ() + 0.5D;
 
-            // Смещение в зависимости от направления
             switch (facing) {
                 case NORTH -> z = pPos.getZ() + 1D;
                 case SOUTH -> z = pPos.getZ() + 0D;

@@ -38,14 +38,13 @@ public class TemperatureEnd {
             int baseTempB = biomeType.getbasetemperature(player);
             int baseTempI = itemType.getbasetemperature(player);
             int tempblock =InbaseChecker.BlockR(5,player);
-            int daytemp = DayTemp.StartDay(level);
             int day1 = DayTemp.Raspisan(level)[0];
             int day2 = DayTemp.Raspisan(level)[1];
             int day3 = DayTemp.Raspisan(level)[2];
             int number = RandomCount.getInstance().getOrCreateRandomNumber(level, hasblock);
 
             boolean nav = IPB(player);
-            int Ftemp = baseTempI +baseTempB+armorTemp+tempblock+daytemp;
+            int Ftemp = baseTempI +baseTempB+armorTemp+tempblock+day1;
             if (nav && BlockRF(5,player)!=0) {
                 Ftemp += 10000;
             }
@@ -55,7 +54,6 @@ public class TemperatureEnd {
             else if (hasblock) {
                 Ftemp += 1000;
             }
-//            BlockRF(5,player)
             currentTemperature= Ftemp;
             player.getPersistentData().putInt("currentTemperature", Ftemp);
 
