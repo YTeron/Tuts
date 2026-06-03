@@ -21,11 +21,11 @@ public class Fornar {
                     new ResourceLocation("tuts", "temp_state"),
                     (itemStack, clientLevel, livingEntity, seed) -> {
                         if (livingEntity instanceof Player player) {
-                            int Ftemp = TemperatureEnd.currentTemperature;
+                            int Ftemp = TemperatureEnd.lastTemperature;
 
-                            if (Ftemp >= 7000) {
+                            if (Ftemp >= 7) {
                                 return 0.0f;
-                            } else if (Ftemp >= 1000) {
+                            } else if (Ftemp >= 1) {
                                 return 0.5f;
                             } else {
                                 return 1.0f;

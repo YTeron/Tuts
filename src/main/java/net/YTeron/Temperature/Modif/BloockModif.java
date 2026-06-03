@@ -10,7 +10,7 @@ public class BloockModif {
     public enum BlockM {
 
         FIRE(
-                player -> 100,
+                player -> 1000,
                 player -> 2.0f
         ),
         PLANKS(
@@ -69,8 +69,15 @@ public class BloockModif {
             case "stone", "cobblestone", "andesite", "diorite", "granite",
                  "stone_bricks", "rock" -> BlockM.ROCK;
             case "fire", "torch", "wall_torch",
-                 "campfire", "furnace", "blast_furnace",
-                 "smoker", "lava", "flowing_lava", "magma_block", "lantern" -> BlockM.FIRE;
+                 "campfire",
+                 "furnace",
+                 "blast_furnace",
+                 "smoker",
+                 "lava",
+                 "flowing_lava",
+                 "magma_block",
+                 "lantern"
+                    -> BlockM.FIRE;
             case "snow" -> BlockM.SNOW_PLANT;
             case "air", "cave_air"-> BlockM.AIR;
             default -> BlockM.DEEPF;

@@ -7,7 +7,7 @@ public class DayTempK {
     private static final int count = 500;
     public static int calculateTemperature(Integer Temp) {
 
-        boolean result = RANDOM.nextInt(2) == 0;
+        boolean result = RANDOM.nextInt(3) == 0;
         if (result)
             Temp+=hightt();
         else

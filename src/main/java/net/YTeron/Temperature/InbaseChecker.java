@@ -11,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import static net.YTeron.Temperature.Modif.BloockModif.getBlockType;
 
 public class InbaseChecker {
-
+    //Проверяет, есть ли твёрдые блоки в определённом направлении от игрока на определённой высоте.
     private static int hasBlock(Level world, BlockPos start,int dx, int dy,int dz) {
         for (int i = 1; i <= 5; i++) {
             BlockPos checkPos = start.offset(dx*i, dy, dz*i);
@@ -30,6 +30,7 @@ public class InbaseChecker {
         }
         return 0;
     }
+    // Проверяет, окружён ли игрок блоками со всех 4 сторон
     public static boolean IPB(Player player) {
         int dist = getDistanceToBlockUp(player);
         int px =0;
@@ -55,6 +56,7 @@ public class InbaseChecker {
             return true;
         return false;
     }
+    // Ищет расстояние от головы игрока до ближайшего блока над ним
     public static int getDistanceToBlockUp(Player player) {
         Level world = player.level();
         BlockPos pos = player.blockPosition();
@@ -70,12 +72,11 @@ public class InbaseChecker {
         return -1;
     }
 
-
+    //Вычисляет суммарную температуру всех блоков вокруг игрока в заданном радиусе.
     public static int BlockR(int radius, Player player) {
         Level world = player.level();
         BlockPos playerPos = player.blockPosition();
         int totalTemperature = 0;
-        int FirebTemperature = 0;
 
         for (int x = -radius; x <= radius; x++) {
             for (int y = -1; y <= radius; y++) {
@@ -91,8 +92,6 @@ public class InbaseChecker {
 
                     if (y == -1 && blockType == BloockModif.BlockM.SNOW) {
                         totalTemperature -= blockTemp;
-                    } else if (blockType == BloockModif.BlockM.FIRE) {
-                        FirebTemperature += blockTemp;
                     } else
                     {
                         totalTemperature += blockTemp;
@@ -111,28 +110,5 @@ public class InbaseChecker {
         }
 
         return totalTemperature;
-    }
-    public static int BlockRF(int radius, Player player) {
-        Level world = player.level();
-        BlockPos playerPos = player.blockPosition();
-        int FirebTemperature = 0;
-
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -1; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockPos checkPos = playerPos.offset(x, y, z);
-                    BlockState blockState = world.getBlockState(checkPos);
-                    Block block = blockState.getBlock();
-                    String blockId = ForgeRegistries.BLOCKS.getKey(block).getPath();
-                    BloockModif.BlockM blockType = getBlockType(blockId);
-
-                    int blockTemp = blockType.getBaseTemperature(player);
-                    if (blockType == BloockModif.BlockM.FIRE) {
-                        FirebTemperature += blockTemp;
-                    }
-                }
-            }
-        }
-        return FirebTemperature;
     }
 }

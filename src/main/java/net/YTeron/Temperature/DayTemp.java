@@ -96,8 +96,4 @@ public class DayTemp extends AData {
         newForecast[2] = DayTempK.calculateTemperature(oldForecast[2]);
         return newForecast;
     }
-
-    public static int StartDay(Level level) {
-        return DayModif.StartDay(level);
-    }
 }

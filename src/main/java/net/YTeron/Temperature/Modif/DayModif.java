@@ -6,11 +6,11 @@ public class DayModif {
     private static final long dayTime = 24000;
 
     public enum TimeDay {
-        MOR(-4000),
-        DAY(-3000),
+        MOR(-1000),
+        DAY(2000),
         EVENING(-1800),
-        NIGHT(-45000),
-        MID_NIGHT(-55000);
+        NIGHT(-2500),
+        MID_NIGHT(-3500);
 
         private final int baseTemperature;
         TimeDay(int baseTemperature) {
