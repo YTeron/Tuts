@@ -1,0 +1,21 @@
+package net.YTeron.buff;
+
+import net.YTeron.Tuts;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class ModEffect {
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS =
+            DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Tuts.MOD_ID);
+
+    public static final RegistryObject<MobEffect> CAMPFIRE_EFFECTS = MOB_EFFECTS.register("campfire_effects",
+            () -> new CampfireEffect(MobEffectCategory.NEUTRAL, 0x36ebab));  // NEUTRAL (нейтральный)
+
+    public static void register(IEventBus eventBus) {
+        MOB_EFFECTS.register(eventBus);
+    }
+}

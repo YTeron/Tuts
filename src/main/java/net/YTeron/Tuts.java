@@ -1,8 +1,10 @@
 package net.YTeron;
 
 import com.mojang.logging.LogUtils;
+import net.YTeron.Particls.ModEvents;
 import net.YTeron.Particls.ModParticles;
 import net.YTeron.armor.ModArmorItems;
+import net.YTeron.buff.ModEffect;
 import net.YTeron.init.ModBlocks;
 import net.YTeron.init.ModItems;
 import net.YTeron.item.ModCreativeModTabs;
@@ -34,7 +36,7 @@ public class Tuts {
         ModItems.REGISTRY.register(modEventBus);
         ModParticles.PARTICLE_TYPES.register(modEventBus);
         ModArmorItems.ITEMS.register(modEventBus);
-
+        ModEffect.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(CustomWeatherManager.class);
     }
