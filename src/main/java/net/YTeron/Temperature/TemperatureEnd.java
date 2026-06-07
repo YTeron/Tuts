@@ -4,6 +4,7 @@ import net.YTeron.Temperature.Modif.ArmorModif;
 import net.YTeron.Temperature.Modif.Block.BlocksS;
 import net.YTeron.Temperature.Modif.DayModif;
 import net.YTeron.Temperature.Modif.ItemModif;
+import net.YTeron.buff.ModEffect;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -71,7 +72,9 @@ public class TemperatureEnd {
         } else if (hasblock) {
             Ftemp += 1000;
         }
-
+        if (player.hasEffect(ModEffect.CAMPFIRE_EFFECTS.get())) {
+            Ftemp += 15000;
+        }
         return Ftemp;
     }
 }

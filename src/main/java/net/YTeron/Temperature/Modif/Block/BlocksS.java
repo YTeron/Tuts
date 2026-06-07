@@ -1,6 +1,9 @@
 package net.YTeron.Temperature.Modif.Block;
 
+import net.YTeron.buff.ModEffect;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -12,6 +15,24 @@ public class BlocksS {
         }
 
         BlockPos playerPos = player.blockPosition();
-        BlockModifRadius.hasBlockAddBuf(world, playerPos, 5, Blocks.CAMPFIRE);
+        BlockModifRadius.hasBlockAddBufVanila(
+                world,           // Level world
+                playerPos,       // BlockPos center
+                5,               // int radius
+                Blocks.CAMPFIRE, // Block targetBlock
+                MobEffects.SLOW_FALLING,  // MobEffect effect
+                100,             // int duration (тики)
+                1                // int amplifier (уровень)
+        );
+        BlockModifRadius.hasBlockAddBufMods(
+                world,           // Level world
+                playerPos,       // BlockPos center
+                5,               // int radius
+                Blocks.CAMPFIRE, // Block targetBlock
+                ModEffect.CAMPFIRE_EFFECTS,  // MobEffect effect
+                100,             // int duration (тики)
+                1                // int amplifier (уровень)
+        );
+
     }
 }
