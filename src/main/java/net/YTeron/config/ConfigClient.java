@@ -12,10 +12,10 @@ public class ConfigClient
     public static final ForgeConfigSpec.ConfigValue<Boolean> TEMPUTEREIZMER;
 
     static{
-        BUILDER.push("Config for TUTS");
+        BUILDER.push("Client TUTS");
 
         TEMPUTEREIZMER =BUILDER.comment("what type of temperature measurement")
-                .define("C",true);
+                .define("C ",true);
 
 
         BUILDER.pop();

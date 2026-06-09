@@ -7,7 +7,7 @@ public class CommonConfig {
     public static final ForgeConfigSpec SPEC;
 
     static{
-        BUILDER.push("Config for TUTS");
+        BUILDER.push("Common TUTS");
 
 
         BUILDER.pop();

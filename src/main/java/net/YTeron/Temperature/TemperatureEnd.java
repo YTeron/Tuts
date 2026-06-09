@@ -50,7 +50,12 @@ public class TemperatureEnd {
             ticks = 0;
         }
     }
-
+    public static int GetDaytemp(TickEvent.PlayerTickEvent event){
+        Player player = event.player;
+        Level level = event.player.level();
+        int dayTemp = DayTemp.Raspisan(level)[0];
+        return dayTemp;
+    }
     public static int GetFinalTemperature(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         boolean hasblock = getDistanceToBlockUp(player) != -1;

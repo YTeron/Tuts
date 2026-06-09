@@ -25,12 +25,9 @@ public class ModCreativeModTabs {
                     .icon(() -> new ItemStack(Items.DIAMOND))
                     .title(Component.translatable("creativetab.tutorial_tab"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(ModItems.SAPPHIRE.get());
                         pOutput.accept(ModItems.FORNAR.get());
 
-                        pOutput.accept(ModBlocks.SAPPHIRE_BLOCK.get());
-                        pOutput.accept(ModBlocks.RAW_SAPPHIRE_BLOCK.get());
-                        pOutput.accept(ModBlocks.FIREBOKA_BLOCK.get());
+                        pOutput.accept(ModBlocks.ICEGLASS.get());
                         pOutput.accept(ModBlocks.OBOGREV2.get());
                         pOutput.accept(ModBlocks.GENERATOR.get());
 
