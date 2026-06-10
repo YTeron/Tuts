@@ -30,8 +30,6 @@ public class ClientWeatherEffects  {
         Minecraft mc = Minecraft.getInstance();
         Level level = mc.level;
         if (level == null) return;
-
-        // Проверяем, должна ли идти буря
         isStormActive = shouldStartStorm(level);
 
         if (isStormActive) {
@@ -60,8 +58,7 @@ public class ClientWeatherEffects  {
     }
 
     private static boolean shouldStartStorm(Level level) {
-        // Ваша логика (температура, биом, день и т.д.)
-        return true;  // сейчас всегда true
+        return true;
     }
 
 
@@ -83,7 +80,6 @@ public class ClientWeatherEffects  {
     public static void onFogColor(ViewportEvent.ComputeFogColor event) {
         if (!isStormActive) return;
 
-        // Серо-синий цвет тумана
         event.setRed(0.3f);
         event.setGreen(0.35f);
         event.setBlue(0.5f);

@@ -1,8 +1,13 @@
 package net.YTeron.Temperature;
 
 import net.YTeron.Temperature.Data.AData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.YTeron.Temperature.Modif.DayModif;
+
+import java.util.Random;
+
+import static net.YTeron.weather.CustomWeatherManager.*;
 
 public class DayTemp extends AData {
 
@@ -11,6 +16,7 @@ public class DayTemp extends AData {
     private static DayTemp instance2;
     private static DayTemp instance3;
     private static DayTemp day;
+    private static final Random RANDOM = new Random();
 
 
     public DayTemp(String key, int defaultValue) {
@@ -61,11 +67,23 @@ public class DayTemp extends AData {
             instance2.setValue(level, newForecast[1]);
             instance3.setValue(level, newForecast[2]);
             day.setValue(level, (int)currentDay);
+
+            // Запуск погоды только на сервере
+            if (level instanceof ServerLevel && newForecast[0] == 1) {
+                startCustomWeather((ServerLevel) level);
+            }
             return newForecast;
         }
 
         long savedDay = getSavedDay(level);
         if (savedDay != currentDay) {
+            boolean shouldStartWeather = RANDOM.nextDouble() < 0.3;
+            if (level instanceof ServerLevel) {
+                if (!isWeatherActive() && shouldStartWeather) {
+                    startCustomWeather((ServerLevel) level);
+                }
+            }
+
             Integer[] shifted = shiftForecast(new Integer[]{temp0, temp1, temp2});
             instance1.setValue(level, shifted[0]);
             instance2.setValue(level, shifted[1]);
@@ -76,6 +94,7 @@ public class DayTemp extends AData {
 
         return new Integer[]{temp0, temp1, temp2};
     }
+
 
     private static long getSavedDay(Level level) {
         return day.getOrCreateNumber(level);

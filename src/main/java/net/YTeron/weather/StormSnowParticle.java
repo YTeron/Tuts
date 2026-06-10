@@ -3,7 +3,6 @@ package net.YTeron.weather;
 import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
@@ -21,7 +20,9 @@ import static net.YTeron.weather.CustomWeatherManager.isWeatherActive;
 public class StormSnowParticle {
     private static final Random random = new Random();
 
-    // ========== ЧАСТИЦЫ ==========
+    // Контроль количества частиц (как в ваниле)
+    private static int particleCounter = 0;
+    private static final int PARTICLES_PER_TICK = 8; // Вместо 150
 
     @SubscribeEvent
     public static void onRenderTick(TickEvent.RenderTickEvent event) {
@@ -31,13 +32,12 @@ public class StormSnowParticle {
         Level level = mc.level;
         if (level == null) return;
 
-        // Проверяем, активна ли кастомная погода
         if (isWeatherActive()) {
-            spawnCustomRainParticles(mc);
+            spawnSnowParticles(mc);
         }
     }
 
-    private static void spawnCustomRainParticles(Minecraft mc) {
+    private static void spawnSnowParticles(Minecraft mc) {
         ClientLevel level = mc.level;
         ParticleEngine particleEngine = mc.particleEngine;
 
@@ -45,23 +45,49 @@ public class StormSnowParticle {
         double camY = mc.gameRenderer.getMainCamera().getPosition().y;
         double camZ = mc.gameRenderer.getMainCamera().getPosition().z;
 
-        for (int i = 0; i < 150; i++) {
-            double x = camX + (random.nextDouble() - 0.5) * 30;
-            double y = camY + 8+ (random.nextDouble() ) * 15;
-            double z = camZ + (random.nextDouble() - 0.5) * 30;
+        // Ванильный снегопад: частицы спавнятся постепенно
+        particleCounter++;
+        int particlesThisTick = PARTICLES_PER_TICK;
+
+        // Добавляем случайные всплески (как в ваниле)
+        if (random.nextInt(20) == 0) {
+            particlesThisTick += 5;
+        }
+
+        for (int i = 0; i < particlesThisTick; i++) {
+            double x = camX + (random.nextDouble() - 0.5) * 24;
+            double y = camY + 8 + random.nextDouble() * 20;
+            double z = camZ + (random.nextDouble() - 0.5) * 24;
+
+            // Скорость снежинок (медленнее дождя)
+            double velX = (random.nextDouble() - 0.5) * 0.15;  // Минимальный горизонтальный дрейф
+            double velY = -0.6 - random.nextDouble() * 0.3;    // Ванильная скорость падения
+            double velZ = (random.nextDouble() - 0.5) * 0.15;
+
+            // Иногда добавляем порывы ветра (горизонтальное смещение)
+            if (random.nextInt(30) == 0) {
+                velX += (random.nextDouble() - 0.5) * 0.3;
+                velZ += (random.nextDouble() - 0.5) * 0.3;
+            }
 
             particleEngine.createParticle(
                     ParticleTypes.SNOWFLAKE,
-                    x, y, z, (random.nextDouble() - 0.5) * 0.9, -1.7, (random.nextDouble() - 0.5) * 0.9
+                    x, y, z, velX, velY, velZ
             );
+        }
 
+        // Сброс счетчика для предотвращения переполнения
+        if (particleCounter > 20) {
+            particleCounter = 0;
         }
     }
 
+    // ========== НАСТРОЙКИ ТУМАНА (оставляем как есть) ==========
+
     private static float currentFogDistance = 200.0f;
     private static final float MAX_FOG_DISTANCE = 200.0f;
-    private static final float MIN_FOG_DISTANCE = 30.0f; // Сильный туман
-    private static final float FOG_CHANGE_SPEED = 0.5f; // Скорость изменения
+    private static final float MIN_FOG_DISTANCE = 30.0f;
+    private static final float FOG_CHANGE_SPEED = 0.5f;
 
     @SubscribeEvent
     public static void onRenderFog(ViewportEvent.RenderFog event) {
@@ -73,7 +99,6 @@ public class StormSnowParticle {
             targetDistance = MAX_FOG_DISTANCE;
         }
 
-        // Плавное приближение к целевой дистанции
         if (Math.abs(currentFogDistance - targetDistance) > 0.1f) {
             if (currentFogDistance < targetDistance) {
                 currentFogDistance += FOG_CHANGE_SPEED;
@@ -97,9 +122,10 @@ public class StormSnowParticle {
     @SubscribeEvent
     public static void onFogColor(ViewportEvent.ComputeFogColor event) {
         if (isWeatherActive()) {
-            event.setRed(1.0f);   // красный компонент (максимум)
-            event.setGreen(1.0f); // зелёный компонент (максимум)
-            event.setBlue(1.0f);  // синий компонент (максимум)
+            // Белый туман (как в снежную погоду)
+            event.setRed(0.95f);
+            event.setGreen(0.95f);
+            event.setBlue(1.0f);
         }
     }
 }
