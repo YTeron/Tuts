@@ -1,9 +1,11 @@
 {
   "item.tuts.sapphire": "Sapphire",
   "item.tuts.raw_sapphire": "Raw Sapphire",
+  "item.tuts.fornar": "Fornar",
 
-  "block.tuts.sapphire_block": "Block of Sapphire",
-  "block.tuts.raw_sapphire_block": "Block of Raw Sapphire",
+  "block.tuts.generator": "Generator",
+  "block.tuts.obogrev": "heater",
+  "block.tuts.iceglass": "frozen glass",
 
   "creativetab.tutorial_tab": "TUTS Tab"
 }
