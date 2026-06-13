@@ -44,41 +44,45 @@ public class BlockModifRadius {
                     .forEach(p -> p.addEffect(new MobEffectInstance(effect, duration, amplifier)));
         }
     }
-    static void hasBlockAddBufMods(Level world, BlockPos center, int radius, Block targetBlock,
-                                   RegistryObject<MobEffect> effectRegistry, int duration, int amplifier) {
+    // В классе BlockModifRadius
+    public static void hasBlockAddBufMods(Level world, BlockPos center, int radius, Block targetBlock,
+                                          RegistryObject<MobEffect> effectRegistry, int duration, int amplifier,
+                                          Player player) {  // ← ДОБАВЛЯЕМ player
         // Проверка параметров
-        if (world == null || center == null || targetBlock == null || effectRegistry == null || world.isClientSide) {
+        if (world == null || center == null || targetBlock == null || effectRegistry == null || world.isClientSide || player == null) {
             return;
         }
 
         // Извлекаем эффект из RegistryObject
         MobEffect effect = effectRegistry.get();
         if (effect == null) {
+            System.out.println("[DEBUG] Effect is NULL!");
             return;
         }
 
-        // Поиск целевого блока в области
+        // Поиск целевого блока в ПОЛНОМ радиусе (включая высоту)
         boolean blockFound = false;
 
-        outerLoop:
         for (int x = -radius; x <= radius; x++) {
-            for (int y = -2; y <= 2; y++) {
+            for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
                     BlockPos checkPos = center.offset(x, y, z);
-                    BlockState state = world.getBlockState(checkPos);
-
-                    if (state.getBlock() == targetBlock) {
+                    if (world.getBlockState(checkPos).getBlock() == targetBlock) {
                         blockFound = true;
-                        break outerLoop;
+                        System.out.println("[DEBUG] Block found at: " + checkPos);
+                        break;
                     }
                 }
+                if (blockFound) break;
             }
+            if (blockFound) break;
         }
 
         if (blockFound) {
-            AABB area = new AABB(center).inflate(radius);
-            world.getEntitiesOfClass(Player.class, area)
-                    .forEach(p -> p.addEffect(new MobEffectInstance(effect, duration, amplifier)));
+            player.addEffect(new MobEffectInstance(effect, duration, amplifier));  // ← ТЕПЕРЬ РАБОТАЕТ
+            System.out.println("[DEBUG] Effect applied!");
+        } else {
+            System.out.println("[DEBUG] Block NOT found in radius " + radius);
         }
     }
 }

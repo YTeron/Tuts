@@ -18,6 +18,8 @@ public class ModEffect extends MobEffect
 
     public static final RegistryObject<MobEffect> CAMPFIRE_EFFECTS = MOB_EFFECTS.register("campfire_effects",
             () -> new CampfireEffect(MobEffectCategory.NEUTRAL, 0x36ebab));
+    public static final RegistryObject<MobEffect> FROZENEFFECT = MOB_EFFECTS.register("frozen_effects",
+            () -> new FrozenEffect(MobEffectCategory.NEUTRAL, 0x36ebab));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

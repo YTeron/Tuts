@@ -13,25 +13,16 @@ public class BlocksS {
         if (world.isClientSide) {
             return;
         }
-
         BlockPos playerPos = player.blockPosition();
-        BlockModifRadius.hasBlockAddBufVanila(
-                world,           // Level world
-                playerPos,       // BlockPos center
-                5,               // int radius
-                Blocks.CAMPFIRE, // Block targetBlock
-                MobEffects.SLOW_FALLING,  // MobEffect effect
-                100,             // int duration (тики)
-                1                // int amplifier (уровень)
-        );
         BlockModifRadius.hasBlockAddBufMods(
                 world,           // Level world
                 playerPos,       // BlockPos center
                 5,               // int radius
                 Blocks.CAMPFIRE, // Block targetBlock
                 ModEffect.CAMPFIRE_EFFECTS,  // MobEffect effect
-                100,             // int duration (тики)
-                1                // int amplifier (уровень)
+                160,             // int duration (тики)
+                1,                // int amplifier (уровень)
+                player
         );
 
     }

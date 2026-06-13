@@ -6,6 +6,7 @@ import net.YTeron.Temperature.Modif.DayModif;
 import net.YTeron.Temperature.Modif.ItemModif;
 import net.YTeron.buff.ModEffect;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,13 +16,13 @@ import net.minecraftforge.fml.common.Mod;
 
 import static net.YTeron.Temperature.BiomsModif.BiomeType;
 import static net.YTeron.Temperature.InbaseChecker.*;
-import static net.YTeron.Temperature.Modif.Block.BlocksS.Vaila;
+import static net.YTeron.weather.CustomWeatherManager.isWeatherActive;
 
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class TemperatureEnd {
     private static int ticks = 0;
-    private static final int UPDATE_DELAY = 20;
+    private static final int UPDATE_DELAY = 10;
     public static int lastTemperature = 0;
 
     @SubscribeEvent
@@ -51,7 +52,6 @@ public class TemperatureEnd {
         }
     }
     public static int GetDaytemp(TickEvent.PlayerTickEvent event){
-        Player player = event.player;
         Level level = event.player.level();
         int dayTemp = DayTemp.Raspisan(level)[0];
         return dayTemp;
@@ -68,7 +68,6 @@ public class TemperatureEnd {
         int baseTempI = itemType.getbasetemperature(player);
         int dayMoidif = DayModif.StartDay(level);
         int dayTemp = DayTemp.Raspisan(level)[0];
-
         int Ftemp = baseTempI + baseTempB + armorTemp + dayTemp+ dayMoidif;
 
         boolean nav = IPB(player);
@@ -79,6 +78,11 @@ public class TemperatureEnd {
         }
         if (player.hasEffect(ModEffect.CAMPFIRE_EFFECTS.get())) {
             Ftemp += 15000;
+        }
+        if(isWeatherActive()) {
+            Ftemp -= 25000;
+            if(!hasblock)
+                player.addEffect(new MobEffectInstance(ModEffect.FROZENEFFECT.get(), 40, 0,false,false,false));
         }
         return Ftemp;
     }
